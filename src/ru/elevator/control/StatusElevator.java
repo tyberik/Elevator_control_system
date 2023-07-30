@@ -1,3 +1,5 @@
+package ru.elevator.control;
+
 public enum StatusElevator {
     GO_UP("Лифт поднимается"),
     GO_DOWN("Лифт опускается"),
@@ -6,6 +8,5 @@ public enum StatusElevator {
     STANDING_WITH_OPEN_DOORS("Лифт стоит с открытыми дверьми");
 
     StatusElevator(String status){
-
     }
 }

@@ -1,7 +1,7 @@
+package ru.elevator.control;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ElevatorControl {
     private final List<Floor> floors = new ArrayList<>();
@@ -9,7 +9,6 @@ public class ElevatorControl {
     private final Elevator bigElevator;
 
     public Elevator getSmallElevator() {
-
         return smallElevator;
     }
 
@@ -21,24 +20,13 @@ public class ElevatorControl {
         for (int floorNumber = 0; floorNumber < floorsSize; floorNumber++) {
             floors.add(new Floor(this, floorNumber));
         }
-        this.smallElevator = new Elevator(this, "Малый лифт");
-        this.bigElevator = new Elevator(this, "Большой лифт");
+        this.smallElevator = new Elevator(this, "Малый лифт", 5);
+        this.bigElevator = new Elevator(this, "Большой лифт", 10);
     }
 
 
     public List<Floor> getFloors() {
         return floors;
-    }
-
-
-    public void goToFloor(Integer floor) throws InterruptedException {
-        int distSmall = floor - smallElevator.getCurrentFloor();
-        int distBig = floor - bigElevator.getCurrentFloor();
-
-        if (Math.abs(distSmall) < Math.abs(distBig) || Math.abs(distSmall) == Math.abs(distBig))
-            smallElevator.pressFloorButton(floor);
-
-        else bigElevator.pressFloorButton(floor);
     }
 
     public Elevator resolveElevator(Integer floor) throws InterruptedException {
@@ -52,6 +40,10 @@ public class ElevatorControl {
             bigElevator.pressFloorButton(floor);
             return bigElevator;
         }
+    }
+
+    public Floor getFloorById(Integer floorNumber){
+        return floors.get(floorNumber);
     }
 
 

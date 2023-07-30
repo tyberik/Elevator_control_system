@@ -1,17 +1,31 @@
+package ru.elevator.control;
+
+import ru.elevator.passenger.Passenger;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Elevator {
     private Integer currentFloor = 0;
-    private ElevatorControl elevatorControl;
+    private final ElevatorControl elevatorControl;
     private StatusElevator status = StatusElevator.STANDING_WITH_OPEN_DOORS;
     private boolean openDoors = true;
     private final String name;
+    private final Integer passengerCountMax;
+    private final List<Passenger> passengerCount = new ArrayList<>();
+
+    public StatusElevator getStatus() {
+        return status;
+    }
 
     public String getName() {
         return name;
     }
 
-    public Elevator(ElevatorControl elevatorControl, String name) {
+    public Elevator(ElevatorControl elevatorControl, String name, Integer passengerCountMax) {
         this.elevatorControl = elevatorControl;
         this.name = name;
+        this.passengerCountMax = passengerCountMax;
     }
 
     public Integer getCurrentFloor() {
@@ -43,7 +57,6 @@ public class Elevator {
             status = StatusElevator.GO_DOWN;
         }
 
-
         while (!currentFloor.equals(floorResult)) {
             currentFloor += direction;
             System.out.println("..." + (currentFloor + 1));
@@ -74,16 +87,28 @@ public class Elevator {
         System.out.println("Связь с диспетчером установлена");
     }
 
-    public Boolean cabinMotionDetected() {
+    private Boolean cabinMotionDetected() {
         System.out.println("Движение между дверьми обнаружено");
-        //TODO
         return false;
     }
 
-    public Boolean cabinIdleDetected() {
+    private Boolean cabinIdleDetected() {
         System.out.println("Движение между дверьми не обнаружено");
-        //TODO
         return true;
+    }
+
+    public void getInElevator(Passenger passenger) {
+
+        if (passengerCount.size() <= passengerCountMax && openDoors) {
+            passengerCount.add(passenger);
+            System.out.println("Пассажир " + passenger.getName() + " вошёл в лифт");
+        }
+    }
+
+    public Floor getOutElevator(Passenger passenger) {
+        passengerCount.remove(passenger);
+        System.out.println("Пассажир " + passenger.getName() + " вышел из лифта");
+        return elevatorControl.getFloorById(currentFloor);
     }
 
 }
